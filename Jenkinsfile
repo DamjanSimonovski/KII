@@ -1,16 +1,15 @@
-pipeline {
-  agent {
-    dockerfile {
-      filename 'jenkins'
-    }
-
+node {
+  def app
+  stage('Clone repository'){
+    checkout scm
   }
-  stages {
-    stage('jenkins') {
-      steps {
-        echo 'Jenkins'
-      }
+  stage('Build image'){
+    app = docker.build("DamjanSimonovski/KII")
+  }
+  stage('Push image'){
+    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub'){
+      app.push("${env.BRANCH_NAME}-${env.BUILD_NUMBER}")
+      app.push("${env.BRANCH_NAME}-latest")
     }
-
   }
 }
