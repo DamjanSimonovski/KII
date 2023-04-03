@@ -4,7 +4,7 @@ node {
     checkout scm
   }
   stage('Build image'){
-    app = docker.build("damjansimonovski/kii")
+    app = docker.build("DamjanSimonovski/kii")
   }
   stage('Push image'){
     docker.withRegistry('https://registry.hub.docker.com', 'dockerhub'){
